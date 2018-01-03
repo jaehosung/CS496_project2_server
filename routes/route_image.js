@@ -1,8 +1,7 @@
-const Member = require('../models/image');
+const Image = require('../models/image');
 
 
-
-exports.show function(req,res){
+exports.show = function(req,res){
     Image.find(function(err, images){
         console.log("call get image");
         if(err) return res.status(500).send({error: 'database failure'});
@@ -13,7 +12,7 @@ exports.show function(req,res){
 
 // GET SINGLE BOOK
 // GET SINGLE BOOK
-export.show_by_id = function(req, res){
+exports.show_by_id = function(req, res){
     Image.findOne({_id: req.params.memberID}, function(err, image){
         if(err) return res.status(500).json({error: err});
         if(!image) return res.status(404).json({error: 'image not found'});
@@ -23,7 +22,7 @@ export.show_by_id = function(req, res){
 
 // GET BOOK BY AUTHOR
 // GET BOOKS BY AUTHOR
-export.find_by_id = function(req, res){
+exports.find_by_id = function(req, res){
     Image.find({memberID: req.params.memberID}, {_id: 1, img: 1},  function(err, images){
         if(err) return res.status(500).json({error: err});
         if(images.length === 0) return res.status(404).json({error: 'image not found'});
@@ -31,9 +30,25 @@ export.find_by_id = function(req, res){
     })
 };
 
+
+exports.find_by_id_last = function(req, res){
+    Image.find({memberID: req.params.memberID}, {_id: 1, img: 1},  function(err, images){
+        if(err) return res.status(500).json({error: err});
+        if(images.length === 0) return res.status(404).json({error: 'image not found'});
+	var temp= [];
+	temp.push(images[images.length-1]);
+
+        res.json(temp);
+
+	console.log(images.length-1);
+	console.log(temp.length);
+    })
+};
+
 // CREATE BOOK
-export.create = function(req, res){
+exports.create = function(req, res){
     var image = new Image();
+	console.log("Create Photos");
 
     for(var i in req.body){
         image.memberID = req.body[i]['memberID'];
@@ -53,7 +68,7 @@ export.create = function(req, res){
 };
 
 
-export.update = function(req, res){
+exports.update = function(req, res){
     Image.update({ _id: req.params.book_id }, { $set: req.body }, function(err, output){
         if(err) res.status(500).json({ error: 'database failure' });
         console.log(output);
@@ -63,7 +78,7 @@ export.update = function(req, res){
 };
 
 // DELETE BOOK
-export.delete = function(req, res){
+exports.delete = function(req, res){
     Image.remove({ _id: req.params.image_id }, function(err, output){
         if(err) return res.status(500).json({ error: "database failure" });
 

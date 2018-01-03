@@ -4,8 +4,6 @@ var app = express();
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
-app.use(bodyParser.urlencoded({ extended: true}));
-app.use(bodyParser.json());
 
 //image limit
 app.use(bodyParser.json({limit : '20mb'}));
@@ -22,9 +20,12 @@ var Image = require('./models/image');
 
 //Router
 // TODO add Image
-// var routerMember = require('./routes')(app, Member);
-// var routerContact = require('./routes')(app,Contact);
-// var routerImage = require('./routes')(app,Image);
+//router.get('/contacts',route_contact.show);
+//router.get('/contacts/:memberID', route_contact.show_by_id);
+//router.get('/contacts/member/:memberID',route_contact.find_by_id);
+//router.post('/contacts', route_contact.create);
+
+
 
 app.use('/api',require('./routes'));
 
